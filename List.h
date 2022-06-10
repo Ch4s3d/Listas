@@ -5,6 +5,7 @@
 #include <limits>
 #include <bits/stdc++.h>
 #include <string>
+#include <fstream>
 #include <iostream>
 using namespace std;
 
@@ -57,6 +58,14 @@ class List {
         }
 
         //-----------------ADD
+
+        bool AddRandom(int size) {
+            for(int i=0 ; i<size ; i++){
+                this->AddLast(rand());
+            }
+            return true;
+        }
+
 
         bool AddFirst(int number) {
             Node* nodo = new Node(number);
@@ -237,6 +246,57 @@ class List {
             this->cont--;
 
             return true;
+        }
+
+        //------------------SAVE
+
+        bool toStream(){
+            ofstream os("./data.dat");
+            if (!os)
+            {
+                cout << "Error al abrir el fichero\n";
+                exit(EXIT_FAILURE);
+            }
+
+            Node* index = this->first;
+
+            while(index != nullptr){
+                os << index->GetValue() << ";";
+                index = index->GetNext();
+            }
+
+            return true;
+
+        }
+
+        //------------------RESTORE
+
+        bool fromStream(){
+            ifstream is("./data.dat");
+            string all = "";
+            if (!is)
+            {
+                cout << "Error al abrir el fichero\n";
+                exit(EXIT_FAILURE);
+            }
+
+            getline(is, all);
+            //cout << all << endl;
+
+            string token;
+            size_t pos = 0;
+            string delimiter = ";";
+
+            while ((pos = all.find(delimiter)) != string::npos) {
+                token = all.substr(0, pos);
+                //cout << token <<endl;
+
+                this->AddLast(stoi(token));
+                all.erase(0, pos + delimiter.length());
+            }
+
+            return true;
+
         }
 
 

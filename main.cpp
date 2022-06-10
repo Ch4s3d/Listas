@@ -19,13 +19,7 @@ int main()
 {
     List list = *new List();
 
-    for(int i=0 ; i<=10 ; i++){
-        list.AddLast(rand());
-    }
-
     string sentence;
-
-    system("pause");
 
     while (true){
 
@@ -67,6 +61,10 @@ int main()
         //--------------------------------------ADD
 
         else if(words[0] == "add"){
+            if(words[1] == "random"){
+                list.AddRandom(stoi(words[2]));
+                cout << "[Ok] I added " << words[2] << " random values" << endl;
+            }
             if(words[2] == "first"){
                 list.AddFirst(stoi(words[1]));
                 cout << "[Ok] I added " << words[1] << " at the start" << endl;
@@ -75,6 +73,7 @@ int main()
                 list.AddLast(stoi(words[1]));
                 cout << "[Ok] I added " << words[1] << " at the end" << endl;
             }
+
         }
 
         //--------------------------------------SHOW
@@ -125,6 +124,21 @@ int main()
                     cout << "ERROR" << endl;
             }
         }
+
+        //--------------------------------------SAVE
+
+        else if(words[0] == "save"){
+            list.toStream();
+            cout << "Saved Succesfully." << endl;
+        }
+
+        //--------------------------------------RESTORE
+
+        else if(words[0] == "restore"){
+            list.fromStream();
+            cout << "Restored Succesfully." << endl;
+        }
+
 
 
         cout << endl << endl;
