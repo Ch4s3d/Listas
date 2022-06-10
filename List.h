@@ -56,6 +56,27 @@ class List {
             this->last = nullptr;
         }
 
+        //-----------------ADD
+
+        bool AddFirst(int number) {
+            Node* nodo = new Node(number);
+
+            if (this->first == nullptr) {
+                this->first = nodo;
+                this->last = nodo;
+            }
+            else {
+
+                this->first->SetPrev(nodo);
+                nodo->SetNext(this->first);
+                this->first = nodo;
+            }
+            //cout << "Added: " << number << endl;
+            this->cont++;
+
+            return true;
+        }
+
         bool AddLast(int number) {
             Node* nodo = new Node(number);
 
@@ -69,15 +90,79 @@ class List {
                 nodo->SetPrev(this->last);
                 this->last = nodo;
             }
-            cout << "Added: " << number << endl;
+            //cout << "Added: " << number << endl;
             this->cont++;
 
             return true;
         }
 
-        bool Delete(int a){
+        //------------------GET
 
-            return true;
+        Node* GetFirst(){
+            return this->first;
+        }
+        Node* GetLast(){
+            return this->last;
+        }
+
+
+
+        //------------------SEARCH
+
+        Node* SearchByValue(int _value){
+            Node* indexNode = this->first;
+            int i = 1;
+
+            while (indexNode != nullptr){
+                if(indexNode->GetValue() == _value)
+                    return indexNode;
+                indexNode=indexNode->GetNext();
+                i++;
+            }
+
+            return nullptr;
+        }
+
+        Node* SearchByPosition(int position){
+            Node* indexNode = this->first;
+
+            for (int i=0 ; i<=position ; i++){
+                if(indexNode == nullptr)
+                    return nullptr;
+                indexNode=indexNode->GetNext();
+            }
+            return indexNode;
+        }
+
+        int SearchGetPosition(int _value){
+            Node* indexNode = this->first;
+            int i = 1;
+
+            while (indexNode != nullptr){
+                if(indexNode->GetValue() == _value)
+                    return i;
+                indexNode=indexNode->GetNext();
+                i++;
+            }
+
+            return -1;
+        }
+
+        int SearchGetValue(int position){
+            Node* indexNode = this->first;
+
+            for (int i=0 ; i<=position ; i++){
+                if(indexNode == nullptr)
+                    return -1;
+                indexNode=indexNode->GetNext();
+            }
+            return indexNode->GetValue();
+        }
+
+        //------------------PRINT
+
+        void Print(string caption, Node* nodo){
+            cout << caption << nodo->GetValue() << endl;
         }
 
         void PrintAll(){
@@ -94,6 +179,67 @@ class List {
                 n++;
             }
         }
+
+        //------------------DELETE
+
+        bool Delete(Node* node){
+            if(node == nullptr)
+                return false;
+
+            if(node->GetPrev() == nullptr){
+                this->first = node->GetNext();
+                this->first->SetPrev(nullptr);
+                delete node;
+            }
+
+            else if(node->GetNext() == nullptr){
+                this->last = node->GetPrev();
+                this->last->SetNext(nullptr);
+                delete node;
+            }
+
+            else if(node->GetNext() == nullptr && node->GetPrev() == nullptr){
+                this->first = nullptr;
+                this->last = nullptr;
+                delete node;
+            }
+
+            else{
+                node->GetPrev()->SetNext(node->GetNext());
+                node->GetNext()->SetPrev(node->GetPrev());
+                delete node;
+            }
+
+            this->cont--;
+
+            return true;
+        }
+
+        bool DeleteFirst(){
+            if(this->first == nullptr)
+                return false;
+
+            this->first->GetNext()->SetPrev(nullptr);
+            this->first = this->first->GetNext();
+
+            this->cont--;
+
+            return true;
+        }
+
+        bool DeleteLast(){
+            if(this->last == nullptr)
+                return false;
+
+            this->last->GetPrev()->SetNext(nullptr);
+            this->last = this->last->GetPrev();
+
+            this->cont--;
+
+            return true;
+        }
+
+
 };
 
 
