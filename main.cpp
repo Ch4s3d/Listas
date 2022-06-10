@@ -21,12 +21,17 @@ int main()
 
     string sentence;
 
+    list.fromStream();
+
+    system("pause");
+
     while (true){
 
         system("CLS");
 
         cout << "Lists C++ example" << endl <<
-                "Type 'help' for help" << endl <<endl;
+                "Type 'help' for help" << endl << endl <<
+                "ListCommand> ";
 
 
         getline(cin, sentence);
@@ -105,7 +110,10 @@ int main()
         //--------------------------------------DELETE
 
         else if(words[0] == "delete"){
-            if(words[1] == "position"){
+            if(words[1] == "all"){
+                list.DeleteAll();
+            }
+            else if(words[1] == "position"){
                 list.Delete(list.SearchByPosition(stoi(words[2])));
             }
             else if(words[1] == "value"){
@@ -137,6 +145,21 @@ int main()
         else if(words[0] == "restore"){
             list.fromStream();
             cout << "Restored Succesfully." << endl;
+        }
+
+        //--------------------------------------SORT
+
+        else if(words[0] == "sort"){
+            if(words[1] == "bubble"){
+                list.BubbleSort();
+            }
+            else if(words[1] == "selection"){
+                list.SelectionSort();
+            }
+            else if(words[1] == "insertion"){
+                list.InsertionSort();
+            }
+            cout << "Sorted Succesfully." << endl;
         }
 
 
@@ -171,3 +194,15 @@ vector<string> SplitSentence(string str){
     result.push_back(word);
     return result;
 }
+
+/* Git: @Ch453d
+ *
+ * Ing. Christopher Daniel Ramírez Flores
+ *
+ * contacto: ramozchris@gmail.com
+ *
+ * Fecha de creación: 09//06//2022
+ *
+ * Última fecha de revisión: 09//06//2022
+ *
+ */

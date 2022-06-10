@@ -9,6 +9,7 @@
 #include <iostream>
 using namespace std;
 
+
 class Node {
 
     int _value;
@@ -25,6 +26,10 @@ public:
 
     int GetValue(){
         return this->_value;
+    }
+
+    void SetValue(int _value){
+        this->_value = _value;
     }
 
     void SetNext(Node* nodo) {
@@ -248,6 +253,17 @@ class List {
             return true;
         }
 
+        bool DeleteAll(){
+            if(this->last == nullptr && this->last == nullptr)
+                return false;
+
+            this->first = nullptr;
+            this->last = nullptr;
+            this->cont = 0;
+
+            return true;
+        }
+
         //------------------SAVE
 
         bool toStream(){
@@ -280,6 +296,10 @@ class List {
                 exit(EXIT_FAILURE);
             }
 
+            this->first=nullptr;
+            this->last=nullptr;
+            this->cont=0;
+
             getline(is, all);
             //cout << all << endl;
 
@@ -298,6 +318,90 @@ class List {
             return true;
 
         }
+        //------------------SORT VERIFICATION
+
+        bool VerifySort(){
+            Node* index = this->first;
+
+            while(index->GetNext() != nullptr){
+
+                if(index->GetValue() > index->GetNext()->GetValue()){
+                    return false;
+                }
+                index = index->GetNext();
+            }
+            return true;
+        }
+
+
+        //------------------SORT
+
+        void BubbleSort(){
+            while(!VerifySort()){
+                Node* index = this->first;
+                while(index->GetNext() != nullptr){
+
+                    if(index->GetValue() > index->GetNext()->GetValue()){
+
+                        int temp_value = index->GetValue();
+
+                        index->SetValue(index->GetNext()->GetValue());
+                        index->GetNext()->SetValue(temp_value);
+
+                    }
+                    index = index->GetNext();
+                }
+            }
+        }
+
+        void SelectionSort(){
+            while(!VerifySort()){
+                Node* pivot = this->first;
+                while(pivot->GetNext() != nullptr){
+                    Node* index = pivot->GetNext();
+                    while(index != nullptr){
+                        if(pivot->GetValue() > index->GetValue()){
+
+                            int temp_value = pivot->GetValue();
+
+                            pivot->SetValue(index->GetValue());
+                            index->SetValue(temp_value);
+
+                        }
+
+                        index = index->GetNext();
+                    }
+
+                    pivot = pivot->GetNext();
+                }
+            }
+        }
+
+        void InsertionSort(){
+            while(!VerifySort()){
+                Node* pivot = this->first->GetNext();
+                while(pivot!= nullptr){
+                    Node* index = pivot->GetPrev();
+                    while(index != nullptr){
+                        if(pivot->GetValue() < index->GetValue()){
+
+                            int temp_value = pivot->GetValue();
+
+                            pivot->SetValue(index->GetValue());
+                            index->SetValue(temp_value);
+
+                        }
+
+                        index = index->GetPrev();
+                    }
+
+                    pivot = pivot->GetNext();
+                }
+            }
+        }
+
+
+
 
 
 };
