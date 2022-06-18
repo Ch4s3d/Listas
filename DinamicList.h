@@ -1,24 +1,20 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef DINAMICLIST_H
+#define DINAMICLIST_H
 
-#include <cstdlib>
-#include <limits>
-#include <bits/stdc++.h>
-#include <string>
-#include <fstream>
-#include <iostream>
-using namespace std;
+#include <Definitions.h>
 
 
 class Node {
 
+    int index;
     int _value;
 
     Node* next;
     Node* prev;
 
 public:
-    Node(int _value){
+    Node(int index, int _value){
+        this->index = index;
         this->_value = _value;
         this->next = nullptr;
         this->prev = nullptr;
@@ -50,13 +46,15 @@ public:
 };
 
 
-class List {
+class DinamicList {
     int cont;
     Node* first;
     Node* last;
 
+    string filesave_path = "./data.dat";
+
     public:
-        List() {
+        DinamicList() {
             this->cont = 0;
             this->first = nullptr;
             this->last = nullptr;
@@ -73,7 +71,17 @@ class List {
 
 
         bool AddFirst(int number) {
-            Node* nodo = new Node(number);
+            Node* nodo = new Node(number, 1);
+
+            //----------Fix Index
+
+            Node* index = this->first;
+            while(index != nullptr){
+                index->SetValue(index->GetValue()+1);
+                index = index->GetNext();
+            }
+
+            //----------Fix positions
 
             if (this->first == nullptr) {
                 this->first = nodo;
@@ -85,14 +93,16 @@ class List {
                 nodo->SetNext(this->first);
                 this->first = nodo;
             }
-            //cout << "Added: " << number << endl;
+
             this->cont++;
+
+
 
             return true;
         }
 
         bool AddLast(int number) {
-            Node* nodo = new Node(number);
+            Node* nodo = new Node(++this->cont, number);
 
             if (this->first == nullptr) {
                 this->first = nodo;
@@ -104,7 +114,7 @@ class List {
                 nodo->SetPrev(this->last);
                 this->last = nodo;
             }
-            //cout << "Added: " << number << endl;
+            //cout << "Added: " << nodo->GetValue() << endl;
             this->cont++;
 
             return true;
@@ -267,7 +277,7 @@ class List {
         //------------------SAVE
 
         bool toStream(){
-            ofstream os("./data.dat");
+            ofstream os(this->filesave_path);
             if (!os)
             {
                 cout << "Error al abrir el fichero\n";
@@ -288,7 +298,7 @@ class List {
         //------------------RESTORE
 
         bool fromStream(){
-            ifstream is("./data.dat");
+            ifstream is(this->filesave_path);
             string all = "";
             if (!is)
             {
@@ -318,6 +328,14 @@ class List {
             return true;
 
         }
+
+        void OpenFileNotepad(){
+            string order = "start notepad \"" + this->filesave_path + "\"";
+            system(order.c_str());
+        }
+
+
+
         //------------------SORT VERIFICATION
 
         bool VerifySort(){
@@ -333,26 +351,30 @@ class List {
             return true;
         }
 
+        //------------------SORT SWAP
 
-        //------------------SORT
+        void SortSwap(Node* A, Node* B){
+            int temp_value = A->GetValue();
+
+            A->SetValue(B->GetValue());
+            B->SetValue(temp_value);
+        }
+
+
+        //------------------BUBBLESORT
 
         void BubbleSort(){
             while(!VerifySort()){
                 Node* index = this->first;
                 while(index->GetNext() != nullptr){
-
-                    if(index->GetValue() > index->GetNext()->GetValue()){
-
-                        int temp_value = index->GetValue();
-
-                        index->SetValue(index->GetNext()->GetValue());
-                        index->GetNext()->SetValue(temp_value);
-
-                    }
+                    if(index->GetValue() > index->GetNext()->GetValue())
+                        SortSwap(index, index->GetNext());
                     index = index->GetNext();
                 }
             }
         }
+
+        //------------------SELECTIONSORT
 
         void SelectionSort(){
             while(!VerifySort()){
@@ -360,15 +382,8 @@ class List {
                 while(pivot->GetNext() != nullptr){
                     Node* index = pivot->GetNext();
                     while(index != nullptr){
-                        if(pivot->GetValue() > index->GetValue()){
-
-                            int temp_value = pivot->GetValue();
-
-                            pivot->SetValue(index->GetValue());
-                            index->SetValue(temp_value);
-
-                        }
-
+                        if(pivot->GetValue() > index->GetValue())
+                            SortSwap(index, index->GetNext());
                         index = index->GetNext();
                     }
 
@@ -377,28 +392,56 @@ class List {
             }
         }
 
+        //------------------INSERITONSORT
+
         void InsertionSort(){
             while(!VerifySort()){
                 Node* pivot = this->first->GetNext();
                 while(pivot!= nullptr){
                     Node* index = pivot->GetPrev();
                     while(index != nullptr){
-                        if(pivot->GetValue() < index->GetValue()){
-
-                            int temp_value = pivot->GetValue();
-
-                            pivot->SetValue(index->GetValue());
-                            index->SetValue(temp_value);
-
-                        }
-
+                        if(pivot->GetValue() < index->GetValue())
+                            SortSwap(index, index->GetNext());
                         index = index->GetPrev();
                     }
-
                     pivot = pivot->GetNext();
                 }
             }
         }
+
+        //------------------QUICKSORT
+
+        void QuickSort(){
+            _QuickSort(this->first, this->last);
+        }
+
+        void _QuickSort(Node* low, Node* high){
+
+            while(!VerifySort()){
+                if (low->GetValue() < high->GetValue()) {
+                    Node* pi = QuickSort_partition(low, high);
+                    _QuickSort(low, pi->GetPrev());
+                    _QuickSort(pi->GetNext(), high);
+                }
+            }
+        }
+
+        Node* QuickSort_partition(Node* low, Node* high){
+
+            Node* pivot = high;
+            Node* i = low;
+
+            for (Node* j = low; j != high; j=j->GetNext()){
+                if (j->GetValue() < pivot->GetValue()){
+                    i = i->GetNext();
+                    SortSwap(i, j);
+                }
+            }
+
+            SortSwap(i->GetNext(), high);
+            return (i->GetNext());
+        }
+
 
 
 
@@ -408,4 +451,4 @@ class List {
 
 
 
-#endif // LIST_H
+#endif // DINAMICLIST_H

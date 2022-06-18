@@ -7,4 +7,6 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
-    List.h
+    Definitions.h \
+    DinamicList.h \
+    StaticList.h

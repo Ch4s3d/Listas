@@ -11,19 +11,82 @@
  */
 
 
-#include "List.h"
+#include "DinamicList.h"
+#include "StaticList.h"
 
 vector<string> SplitSentence(string str);
+bool MenuStaticArray(StaticList list);
+bool MenuDinamicArray(DinamicList list);
+
 
 int main()
 {
-    List list = *new List();
+    DinamicList dlist = *new DinamicList();
+    StaticList slist = *new StaticList();
+
+    int option;
+
+    dlist.fromStream();
+
+    while (true){
+
+        system("CLS");
+
+        cout << "Lists C++ example" << endl <<
+                "1. Static Array \n2. Dinamic Array \n 0. Exit" << endl << endl <<
+                "ListCommand> ";
+
+
+        cin >> option;
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+
+        switch(option){
+            case 0:
+                return 1;
+            break;
+            case 1:
+                MenuStaticArray(slist);
+            break;
+            case 2:
+                MenuDinamicArray(dlist);
+            break;
+        }
+
+
+
+
+        system("pause");
+        system("CLS");
+
+    }
+
+
+
+    cout << "Done!\n";
+    return 0;
+}
+
+vector<string> SplitSentence(string str){
+    vector<string> result;
+    string word = "";
+    for (auto x : str)
+    {
+        if (x == ' ')
+        {
+            result.push_back(word);
+            word = "";
+        }
+        else {
+            word = word + x;
+        }
+    }
+    result.push_back(word);
+    return result;
+}
+
+bool MenuStaticArray(StaticList list){
 
     string sentence;
-
-    list.fromStream();
-
-    system("pause");
 
     while (true){
 
@@ -39,11 +102,12 @@ int main()
 
         vector<string> words = SplitSentence(sentence);
 
-
+        /*
         cout << "Size: " << words.size() << endl;
         for (int i=0 ; i< int(words.size()) ; i++){
             cout << i+1 << ": " << words[i] << endl;
         }
+        */
 
         system("CLS");
 
@@ -66,11 +130,90 @@ int main()
         //--------------------------------------ADD
 
         else if(words[0] == "add"){
-            if(words[1] == "random"){
+            if(words[1] == "random" || words[1] == "rand" ){
                 list.AddRandom(stoi(words[2]));
                 cout << "[Ok] I added " << words[2] << " random values" << endl;
             }
-            if(words[2] == "first"){
+            else if(words[2] == "first"){
+                list.AddFirst(stoi(words[1]));
+                cout << "[Ok] I added " << words[1] << " at the start" << endl;
+            }
+            else if(words[2] == "last"){
+                //list.AddLast(stoi(words[1]));
+                cout << "[Ok] I added " << words[1] << " at the end" << endl;
+            }
+
+        }
+
+        //--------------------------------------SHOW
+
+        else if(words[0] == "show"){
+            if(words[1] == "all"){
+                list.ShowAll();
+            }
+        }
+
+
+        cout << endl << endl;
+
+
+        system("pause");
+        system("CLS");
+
+    }
+
+}
+
+bool MenuDinamicArray(DinamicList list){
+    string sentence;
+
+    while (true){
+
+        system("CLS");
+
+        cout << "Lists C++ example" << endl <<
+                "Type 'help' for help" << endl << endl <<
+                "ListCommand> ";
+
+
+        getline(cin, sentence);
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+
+        vector<string> words = SplitSentence(sentence);
+
+        /*
+        cout << "Size: " << words.size() << endl;
+        for (int i=0 ; i< int(words.size()) ; i++){
+            cout << i+1 << ": " << words[i] << endl;
+        }
+        */
+
+        system("CLS");
+
+        cout << "Lists C++ example" << endl <<
+                "Type 'help' for help" << endl <<endl;
+
+        //--------------------------------------EXIT
+
+        if(words[0] == "exit")
+            return 0;
+
+        //--------------------------------------HELP
+
+        else if(words[0] == "help"){
+            cout << "add # {first | last}" << endl <<
+                    "show {# | all}" << endl <<
+                    "exit" << endl;
+        }
+
+        //--------------------------------------ADD
+
+        else if(words[0] == "add"){
+            if(words[1] == "random" || words[1] == "rand" ){
+                list.AddRandom(stoi(words[2]));
+                cout << "[Ok] I added " << words[2] << " random values" << endl;
+            }
+            else if(words[2] == "first"){
                 list.AddFirst(stoi(words[1]));
                 cout << "[Ok] I added " << words[1] << " at the start" << endl;
             }
@@ -147,6 +290,12 @@ int main()
             cout << "Restored Succesfully." << endl;
         }
 
+        //--------------------------------------OpenFileSave
+
+        else if(words[0] == "openfile"){
+            list.OpenFileNotepad();
+        }
+
         //--------------------------------------SORT
 
         else if(words[0] == "sort"){
@@ -159,6 +308,9 @@ int main()
             else if(words[1] == "insertion"){
                 list.InsertionSort();
             }
+            else if(words[1] == "quick"){
+                list.QuickSort();
+            }
             cout << "Sorted Succesfully." << endl;
         }
 
@@ -166,33 +318,12 @@ int main()
 
         cout << endl << endl;
 
+
         system("pause");
         system("CLS");
 
     }
 
-
-
-    cout << "Done!\n";
-    return 0;
-}
-
-vector<string> SplitSentence(string str){
-    vector<string> result;
-    string word = "";
-    for (auto x : str)
-    {
-        if (x == ' ')
-        {
-            result.push_back(word);
-            word = "";
-        }
-        else {
-            word = word + x;
-        }
-    }
-    result.push_back(word);
-    return result;
 }
 
 /* Git: @Ch453d
