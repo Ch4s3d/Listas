@@ -66,6 +66,7 @@ public:
 
         for(int i=cont ; i<cont+size ; i++){
             tempList[i] =  *new Object(i, rand());
+            //cout << "Value: " << tempList[i].getValue() << endl;
         }
 
         this->list = tempList;
@@ -87,14 +88,55 @@ public:
         return true;
     }
 
+    bool AddLast(int _value) {
+        Object* tempList = new Object[cont+1];
+
+        for(int i=0 ; i<cont ; i++){
+            tempList[i] =  this->list[i];
+        }
+
+        tempList[cont] =  *new Object(cont, _value);
+        this->list = tempList;
+        cont++;
+        return true;
+    }
+
     //-----------------------------------SHOW
 
     bool ShowAll() {
         for(int i=0 ; i<this->cont ; i++){
-            cout<<  this->list[i].getIndex()+1 << ": " << this->list->getValue() << endl;
+            cout<<  this->list[i].getIndex()+1 << ": " << this->list[i].getValue() << endl;
         }
         return true;
     }
+
+    //-----------------------------------Delete
+
+    bool DeleteAll() {
+        cont = 0 ;
+        this->list = new Object[0];
+        return true;
+    }
+
+    //-----------------------------------Buscar
+
+    int BuscarPorValor(int _value) {
+        for(int i=0 ; i<cont ; i++){
+            if (this->list[i].getValue() == _value){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    int BuscarPorPosicion(int index) {
+        if(index > this->cont)
+            return -1;
+
+        return this->list[index].getValue();
+    }
+
+
 
 
 

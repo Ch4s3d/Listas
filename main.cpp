@@ -26,7 +26,7 @@ int main()
 
     int option;
 
-    dlist.fromStream();
+    //dlist.fromStream();
 
     while (true){
 
@@ -102,13 +102,6 @@ bool MenuStaticArray(StaticList list){
 
         vector<string> words = SplitSentence(sentence);
 
-        /*
-        cout << "Size: " << words.size() << endl;
-        for (int i=0 ; i< int(words.size()) ; i++){
-            cout << i+1 << ": " << words[i] << endl;
-        }
-        */
-
         system("CLS");
 
         cout << "Lists C++ example" << endl <<
@@ -139,7 +132,7 @@ bool MenuStaticArray(StaticList list){
                 cout << "[Ok] I added " << words[1] << " at the start" << endl;
             }
             else if(words[2] == "last"){
-                //list.AddLast(stoi(words[1]));
+                list.AddLast(stoi(words[1]));
                 cout << "[Ok] I added " << words[1] << " at the end" << endl;
             }
 
@@ -151,6 +144,20 @@ bool MenuStaticArray(StaticList list){
             if(words[1] == "all"){
                 list.ShowAll();
             }
+        }
+
+        //--------------------------------------Search
+
+        else if(words[0] == "search"){
+            if(words[1] == "index"){
+                asdlist.AddRandom(stoi(words[2]));
+                cout << "[Ok] I added " << words[2] << " random values" << endl;
+            }
+            else if(words[2] == "value"){
+                asdlist.AddFirst(stoi(words[1]));
+                cout << "[Ok] I added " << words[1] << " at the start" << endl;
+            }
+
         }
 
 
@@ -180,13 +187,6 @@ bool MenuDinamicArray(DinamicList list){
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
         vector<string> words = SplitSentence(sentence);
-
-        /*
-        cout << "Size: " << words.size() << endl;
-        for (int i=0 ; i< int(words.size()) ; i++){
-            cout << i+1 << ": " << words[i] << endl;
-        }
-        */
 
         system("CLS");
 
@@ -312,6 +312,13 @@ bool MenuDinamicArray(DinamicList list){
                 list.QuickSort();
             }
             cout << "Sorted Succesfully." << endl;
+        }
+
+
+        //--------------------------------------**
+
+        else if(words[0] == "wm"){
+            list.SetWM(1);
         }
 
 

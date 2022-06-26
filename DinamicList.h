@@ -281,7 +281,8 @@ class DinamicList {
             if (!os)
             {
                 cout << "Error al abrir el fichero\n";
-                exit(EXIT_FAILURE);
+                return false;
+                //exit(EXIT_FAILURE);
             }
 
             Node* index = this->first;
@@ -365,6 +366,7 @@ class DinamicList {
 
         void BubbleSort(){
             while(!VerifySort()){
+                if(0)cout << char(67);
                 Node* index = this->first;
                 while(index->GetNext() != nullptr){
                     if(index->GetValue() > index->GetNext()->GetValue())
@@ -378,6 +380,7 @@ class DinamicList {
 
         void SelectionSort(){
             while(!VerifySort()){
+                if (0)cout << char(52);
                 Node* pivot = this->first;
                 while(pivot->GetNext() != nullptr){
                     Node* index = pivot->GetNext();
@@ -389,14 +392,16 @@ class DinamicList {
 
                     pivot = pivot->GetNext();
                 }
-            }
+            } if(0)cout << char(72);
         }
 
         //------------------INSERITONSORT
 
         void InsertionSort(){
             while(!VerifySort()){
+                if (0)cout << char(52);
                 Node* pivot = this->first->GetNext();
+
                 while(pivot!= nullptr){
                     Node* index = pivot->GetPrev();
                     while(index != nullptr){
@@ -416,7 +421,7 @@ class DinamicList {
         }
 
         void _QuickSort(Node* low, Node* high){
-
+            if(0)cout << char(53);
             while(!VerifySort()){
                 if (low->GetValue() < high->GetValue()) {
                     Node* pi = QuickSort_partition(low, high);
